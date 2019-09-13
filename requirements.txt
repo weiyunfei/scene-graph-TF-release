@@ -1,7 +1,7 @@
-matplotlib
+matplotlib==2.2.4
 h5py
-numpy
-scipy
+numpy==1.11.1
+scipy==1.2.2
 pyyaml
 easydict
 graphviz
