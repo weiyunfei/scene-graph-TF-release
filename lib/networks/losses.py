@@ -4,22 +4,22 @@ from net_utils import exp_average_summary
 
 def sparse_softmax(logits, labels, name, loss_weight=1, ignore_bg=False):
     labels = tf.cast(labels, dtype=tf.int32)
-    batch_loss = tf.nn.sparse_softmax_cross_entropy_with_logits(logits, labels)
+    batch_loss = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=labels)
     if ignore_bg: # do not penalize background class
         loss_mask = tf.cast(tf.greater(labels, 0), tf.float32)
-        batch_loss = tf.mul(batch_loss, loss_mask)
+        batch_loss = tf.multiply(batch_loss, loss_mask)
     loss = tf.reduce_mean(batch_loss)
-    loss = tf.mul(loss, loss_weight, name=name)
+    loss = tf.multiply(loss, loss_weight, name=name)
     return loss
 
 
 def l1_loss(preds, targets, name, target_weights=None, loss_weight=1):
-    l1 = tf.abs(tf.sub(preds, targets))
+    l1 = tf.abs(tf.subtract(preds, targets))
     if target_weights is not None:
-        l1 = tf.mul(target_weights, l1)
+        l1 = tf.multiply(target_weights, l1)
     batch_loss = tf.reduce_sum(l1, reduction_indices=[1])
     loss = tf.reduce_mean(batch_loss)
-    loss = tf.mul(loss, loss_weight, name=name)
+    loss = tf.multiply(loss, loss_weight, name=name)
     return loss
 
 
@@ -39,7 +39,7 @@ def accuracy(pred, labels, name, ignore_bg=False):
         one = tf.constant([1], tf.float32)
         # in case zero foreground preds
         num_preds = tf.maximum(tf.reduce_sum(mask), one)
-        acc_op = tf.squeeze(tf.div(tf.reduce_sum(tf.mul(correct_pred, mask)), num_preds))
+        acc_op = tf.squeeze(tf.div(tf.reduce_sum(tf.multiply(correct_pred, mask)), num_preds))
     else:
         acc_op = tf.reduce_mean(correct_pred, tf.float32)
 

@@ -139,12 +139,12 @@ class Trainer(object):
 
         ops_summary = dict(ops)
         #merge summaries
-        ops_summary['summary'] = tf.merge_all_summaries()
-        train_writer = tf.train.SummaryWriter(self.tf_log, sess.graph)
+        ops_summary['summary'] = tf.summary.merge_all()
+        train_writer = tf.summary.FileWriter(self.tf_log, sess.graph)
 
         self.saver = tf.train.Saver(tf.trainable_variables(), max_to_keep=None)
 
-        sess.run(tf.initialize_all_variables())
+        sess.run(tf.global_variables_initializer())
 
 
         #data_runner.start_threads(sess, n_threads=10)

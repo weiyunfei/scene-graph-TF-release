@@ -260,8 +260,8 @@ class dual_graph_vrd(basenet):
         sub_vert_w = self.get_output('sub_vert_score')
         obj_vert_w = self.get_output('obj_vert_score')
 
-        weighted_sub = tf.mul(sub_vert, sub_vert_w)
-        weighted_obj = tf.mul(obj_vert, obj_vert_w)
+        weighted_sub = tf.multiply(sub_vert, sub_vert_w)
+        weighted_obj = tf.multiply(obj_vert, obj_vert_w)
         return weighted_sub + weighted_obj
 
     def _compute_vert_context_soft(self, edge_factor, vert_factor, reuse=False):
@@ -290,8 +290,8 @@ class dual_graph_vrd(basenet):
         in_edge_w = self.get_output('in_edge_score')
 
         # weight the edge factors with computed weigths
-        out_edge_weighted = tf.mul(out_edge, out_edge_w)
-        in_edge_weighted = tf.mul(in_edge, in_edge_w)
+        out_edge_weighted = tf.multiply(out_edge, out_edge_w)
+        in_edge_weighted = tf.multiply(in_edge, in_edge_w)
 
 
         edge_sum = out_edge_weighted + in_edge_weighted

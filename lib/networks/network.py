@@ -103,8 +103,8 @@ class Network(object):
         """Attach a lot of summaries to a Tensor."""
         with tf.name_scope('summaries'):
             mean = tf.reduce_mean(var)
-            tf.scalar_summary('mean/' + name, mean)
-            tf.histogram_summary(name, var)
+            tf.summary.scalar('mean/' + name, mean)
+            tf.summary.histogram(name, var)
 
     def get_unique_name(self, prefix):
         id = sum(t.startswith(prefix) for t,_ in self.layers.items())+1
@@ -134,10 +134,10 @@ class Network(object):
             if group==1:
                 conv = convolve(input, kernel)
             else:
-                input_groups = tf.split(3, group, input)
-                kernel_groups = tf.split(3, group, kernel)
+                input_groups = tf.split(axis=3, num_or_size_splits=group, value=input)
+                kernel_groups = tf.split(axis=3, num_or_size_splits=group, value=kernel)
                 output_groups = [convolve(i, k) for i,k in zip(input_groups, kernel_groups)]
-                conv = tf.concat(3, output_groups)
+                conv = tf.concat(axis=3, values=output_groups)
 
             if relu:
                 bias = tf.nn.bias_add(conv, biases)

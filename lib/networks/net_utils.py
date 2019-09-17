@@ -6,8 +6,8 @@ def exp_average_summary(ops, dep_ops, decay=0.9, name='avg', scope_pfix='',
     averages_op = averages.apply(ops)
 
     for op in ops:
-        tf.scalar_summary(scope_pfix + op.name + raw_pfix, op)
-        tf.scalar_summary(scope_pfix + op.name + avg_pfix,
+        tf.summary.scalar(scope_pfix + op.name + raw_pfix, op)
+        tf.summary.scalar(scope_pfix + op.name + avg_pfix,
                           averages.average(op))
 
     with tf.control_dependencies([averages_op]):
@@ -38,7 +38,7 @@ def pad_and_gather(vecs, mask_inds, pad=None):
         pad = tf.expand_dims(tf.zeros_like(vecs[0]), 0)
     else:
         pad = tf.expand_dims(pad, 0)
-    vecs_padded = tf.concat(0, [vecs, pad])
+    vecs_padded = tf.concat(axis=0, values=[vecs, pad])
     # flatten mask and edges
     vecs_gathered = tf.gather(vecs_padded, mask_inds)
     return vecs_gathered
